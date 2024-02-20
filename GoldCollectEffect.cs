@@ -23,6 +23,9 @@ namespace VeryDisco.Common
         private Vector3 startPos, endPos;
         private ObjectPool<GameObject> goldItemPool;
 
+        public System.Action OnGoldSpawn = delegate { };
+        public System.Action OnEffectEnd = delegate { }; 
+
         private void Start()
         {
             goldItemPool = new ObjectPool<GameObject>(() => Instantiate(goldItemPrefab, transform));
@@ -62,8 +65,12 @@ namespace VeryDisco.Common
                             });
                     });
 
+                OnGoldSpawn.Invoke();
+
                 yield return new WaitForSeconds(spawnDelay);
             }
+
+            OnEffectEnd.Invoke();
         }
     }
 }
